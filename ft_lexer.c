@@ -6,7 +6,7 @@
 /*   By: nali <nali@42abudhabi.ae>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 04:55:03 by nali              #+#    #+#             */
-/*   Updated: 2022/05/26 09:09:28 by nali             ###   ########.fr       */
+/*   Updated: 2022/05/26 10:30:03 by nali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_count_tokens(char *input, int words, int i)
 			words++;
 			while ((!ft_chk_spce_tab(input[i]) || flg == 1) && input[i] != '\0')
 			{
-				if (input[i] == '\'' || input[i] == '\"')
+				if ((input[i] == '\'' || input[i] == '\"') && quote == 0)
 					quote = input[i];
 				flg = (flg + (input[i] == quote)) % 2;
 				quote = quote * flg;
@@ -117,23 +117,21 @@ void	ft_lexer(char *input, t_var	vars)
 	tokens = ft_get_tokens(input);
 	if (tokens == NULL)
 		return ;
+	int i;
+	i = 0;
+	printf("+++BEFORE+++\n");
+	while (tokens[i])
+	{
+		printf("%s\n", tokens[i]);
+		i++;
+	}
 	ft_expander(tokens, vars);
+	i = 0;
+	printf("+++AFTER+++\n");
+	while (tokens[i])
+	{
+		printf("%s\n", tokens[i]);
+		i++;
+	}
 	ft_free_memory(tokens);
 }
-
-	// int i;
-	// i = 0;
-	// printf("+++BEFORE+++\n");
-	// while (tokens[i])
-	// {
-	// 	printf("%s\n", tokens[i]);
-	// 	i++;
-	// }
-	// ft_expander(tokens, vars);
-	// i = 0;
-	// printf("+++AFTER+++\n");
-	// while (tokens[i])
-	// {
-	// 	printf("%s\n", tokens[i]);
-	// 	i++;
-	// }
