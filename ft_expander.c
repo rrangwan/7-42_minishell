@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expander.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nali <nali@42abudhabi.ae>                  +#+  +:+       +#+        */
+/*   By: nali <nali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 10:46:41 by nali              #+#    #+#             */
-/*   Updated: 2022/05/26 08:47:54 by nali             ###   ########.fr       */
+/*   Updated: 2022/05/26 20:21:16 by nali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,28 +65,31 @@ char	*ft_handle_dollar(char *str, int p, t_var vars)
 	return (result);
 }
 
-void	ft_expander(char **tokens, t_var vars)
+void	ft_expander(char **tokens, t_var vars, int i)
 {
-	int		i;
 	int		j;
-	char	*str;
 	char	*sub;
+	int		q;
+	int		flg;
 
-	i = 0;
-	while (tokens[i])
+	i = -1;
+	q = 0;
+	flg = 0;
+	while (tokens[++i])
 	{
-		j = 0;
-		str = tokens[i];
-		while (str[j])
+		j = -1;
+		while (tokens[i][++j])
 		{
-			if (str[j] == '$' && str[j + 1])
+			if (tokens[i][j] == '\'' || tokens[i][j] == '\"')
+				q = tokens[i][j];
+			flg = (flg + (tokens[i][j] == q)) % 2;
+			q = q * flg;
+			if (tokens[i][j] == '$' && tokens[i][j + 1] && (q == 0 || q == 34))
 			{
-				sub = ft_handle_dollar(str, j + 1, vars);
+				sub = ft_handle_dollar(tokens[i], j + 1, vars);
 				free(tokens[i]);
 				tokens[i] = sub;
 			}
-			j++;
 		}
-		i++;
 	}
 }

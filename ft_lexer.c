@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lexer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nali <nali@42abudhabi.ae>                  +#+  +:+       +#+        */
+/*   By: nali <nali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 04:55:03 by nali              #+#    #+#             */
-/*   Updated: 2022/05/26 10:30:03 by nali             ###   ########.fr       */
+/*   Updated: 2022/05/26 20:21:24 by nali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,27 +111,28 @@ char	**ft_get_tokens(char *input)
 void	ft_lexer(char *input, t_var	vars)
 {
 	char	**tokens;
+	int		i;
 
 	if (!input)
 		return ;
 	tokens = ft_get_tokens(input);
 	if (tokens == NULL)
 		return ;
-	int i;
-	i = 0;
-	printf("+++BEFORE+++\n");
-	while (tokens[i])
-	{
-		printf("%s\n", tokens[i]);
-		i++;
-	}
-	ft_expander(tokens, vars);
-	i = 0;
-	printf("+++AFTER+++\n");
-	while (tokens[i])
-	{
-		printf("%s\n", tokens[i]);
-		i++;
-	}
+	// i = 0;
+	// printf("+++BEFORE+++\n");
+	// while (tokens[i])
+	// {
+	// 	printf("%s\n", tokens[i]);
+	// 	i++;
+	// }
+	ft_expander(tokens, vars, i);
+	// i = 0;
+	// printf("+++AFTER+++\n");
+	// while (tokens[i])
+	// {
+	// 	printf("%s ", tokens[i]);
+	// 	i++;
+	// }
+	// printf("\n");
 	ft_free_memory(tokens);
 }
