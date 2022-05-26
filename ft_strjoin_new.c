@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_strjoin_new.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nali <nali@42abudhabi.ae>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 12:40:16 by nali              #+#    #+#             */
-/*   Updated: 2022/05/26 08:57:47 by nali             ###   ########.fr       */
+/*   Updated: 2022/05/26 07:32:12 by nali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-#include <stdio.h>
-
-static char	*ft_string_copy(char const *s1, char const *s2, char *p)
+static char	*ft_string_copy_new(char *s1, char *s2, char *p)
 {
 	int	i;
 	int	j;
@@ -42,7 +40,7 @@ static char	*ft_string_copy(char const *s1, char const *s2, char *p)
 	return (p);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin_new(char *s1, char *s2)
 {
 	char	*ptr;
 	int		l;
@@ -51,6 +49,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	ptr = (char *)malloc((l + 1) * sizeof(char));
 	if (!ptr)
 		return (NULL);
-	ptr = ft_string_copy(s1, s2, ptr);
+	ptr = ft_string_copy_new(s1, s2, ptr);
+	if (s1)
+		free(s1);
+	if (s2)
+		free(s2);
 	return (ptr);
 }

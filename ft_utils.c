@@ -6,9 +6,11 @@
 /*   By: nali <nali@42abudhabi.ae>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 05:07:35 by nali              #+#    #+#             */
-/*   Updated: 2022/05/23 09:54:46 by nali             ###   ########.fr       */
+/*   Updated: 2022/05/26 08:59:54 by nali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -36,10 +38,29 @@ void	ft_free_memory(char **tokens)
 	int	i;
 
 	i = 0;
-	while (tokens[i])
+	if (tokens)
 	{
-		free(tokens[i]);
-		i++;
+		while (tokens[i])
+		{
+			free(tokens[i]);
+			i++;
+		}
+		free(tokens);
 	}
-	free(tokens);
+}
+
+void	ft_free_env(t_var *vars)
+{
+	int	i;
+
+	i = 0;
+	if (vars)
+	{
+		while (vars->env_var[i])
+		{
+			free(vars->env_var[i]);
+			i++;
+		}
+		free(vars->env_var);
+	}
 }

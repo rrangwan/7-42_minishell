@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nali <nali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nali <nali@42abudhabi.ae>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 09:39:41 by nali              #+#    #+#             */
-/*   Updated: 2021/11/10 13:47:10 by nali             ###   ########.fr       */
+/*   Updated: 2022/05/26 05:25:22 by nali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@ int	ft_strlen(const char *str)
 	int	len;
 
 	len = 0;
+	if (!str)
+		return (len);
 	while (*str != '\0')
 	{
 		len++;

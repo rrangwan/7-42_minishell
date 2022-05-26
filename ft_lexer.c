@@ -6,7 +6,7 @@
 /*   By: nali <nali@42abudhabi.ae>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 04:55:03 by nali              #+#    #+#             */
-/*   Updated: 2022/05/23 11:05:06 by nali             ###   ########.fr       */
+/*   Updated: 2022/05/26 09:09:28 by nali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	**ft_separate_tokens(char **tokens, char *input, int i, int j)
 		else
 			i++;
 	}
-	tokens[j] = "\0";
+	tokens[j] = NULL;
 	return (tokens);
 }
 
@@ -108,7 +108,7 @@ char	**ft_get_tokens(char *input)
 	return (tokens);
 }
 
-void	ft_lexer(char *input)
+void	ft_lexer(char *input, t_var	vars)
 {
 	char	**tokens;
 
@@ -117,13 +117,23 @@ void	ft_lexer(char *input)
 	tokens = ft_get_tokens(input);
 	if (tokens == NULL)
 		return ;
-	// int i;
-	// i = 0;
-	// while (tokens[i])
-	// {
-	// 	ft_putstr_fd(tokens[i], 1);
-	// 	printf("\n");
-	// 	i++;
-	// }
+	ft_expander(tokens, vars);
 	ft_free_memory(tokens);
 }
+
+	// int i;
+	// i = 0;
+	// printf("+++BEFORE+++\n");
+	// while (tokens[i])
+	// {
+	// 	printf("%s\n", tokens[i]);
+	// 	i++;
+	// }
+	// ft_expander(tokens, vars);
+	// i = 0;
+	// printf("+++AFTER+++\n");
+	// while (tokens[i])
+	// {
+	// 	printf("%s\n", tokens[i]);
+	// 	i++;
+	// }

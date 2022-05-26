@@ -6,7 +6,7 @@
 /*   By: nali <nali@42abudhabi.ae>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 20:06:58 by nali              #+#    #+#             */
-/*   Updated: 2021/11/06 20:06:58 by nali             ###   ########.fr       */
+/*   Updated: 2022/05/26 08:57:36 by nali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_atoi(const char *nptr)
 	start = 0;
 	while (*nptr)
 	{
-		if (((*nptr >= 9 && *nptr <= 13) || *nptr == ' ') && start == 0 )
+		if (((*nptr >= 9 && *nptr <= 13) || *nptr == ' ') && start == 0)
 			nptr++;
 		else if ((*nptr == '-' || *nptr == '+') && start == 0)
 			nptr = ft_checksign(nptr, &sign, &start);
