@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expander.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nali <nali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nali <nali@42abudhabi.ae>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 10:46:41 by nali              #+#    #+#             */
-/*   Updated: 2022/05/26 20:21:16 by nali             ###   ########.fr       */
+/*   Updated: 2022/05/30 05:50:36 by nali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,26 @@ void	ft_expander(char **tokens, t_var vars, int i)
 			}
 		}
 	}
+}
+
+char	**ft_split_redirection_pipe(char **tokens, int i, int w)
+{
+	int		c;
+	int		k[2];
+	char	**new_tokens;
+
+	i = -1;
+	c = ft_split_count(tokens, i);
+	printf("new count = %d\n", c);
+	if (c == w)
+		return (tokens);
+	new_tokens = (char **)malloc((c + 1) * sizeof(char *));
+	if (!new_tokens)
+		return (NULL);
+	i = -1;
+	k[0] = 0;
+	k[1] = 0;
+	new_tokens = ft_sub_split(new_tokens, tokens, i, k);
+	ft_free_memory(tokens);
+	return (new_tokens);
 }

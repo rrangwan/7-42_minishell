@@ -6,7 +6,7 @@
 /*   By: nali <nali@42abudhabi.ae>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 05:07:35 by nali              #+#    #+#             */
-/*   Updated: 2022/05/26 08:59:54 by nali             ###   ########.fr       */
+/*   Updated: 2022/05/30 06:38:55 by nali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,18 @@ void	ft_free_env(t_var *vars)
 			i++;
 		}
 		free(vars->env_var);
+	}
+}
+
+void	ft_print_tokens(char **tokens)
+{
+	int	i;
+
+	printf("hi there\n");
+	i = 0;
+	while (tokens[i])
+	{
+		printf("%s\n", tokens[i]);
+		i++;
 	}
 }

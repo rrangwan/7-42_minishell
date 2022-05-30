@@ -6,7 +6,7 @@
 #    By: nali <nali@42abudhabi.ae>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/10 14:00:31 by nali              #+#    #+#              #
-#    Updated: 2022/05/26 09:07:15 by nali             ###   ########.fr        #
+#    Updated: 2022/05/30 05:46:21 by nali             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,12 @@ NAME	= minishell
 
 LIBFT	= libft
 
-SRCS	= main.c ft_utils.c ft_lexer.c ft_expander.c ft_strjoin_new.c 
-
+SRCS	= main.c ft_utils.c ft_lexer.c ft_expander.c ft_strjoin_new.c ft_sub_split.c  
 OBJS	= ${SRCS:.c=.o}
 
 CC		= gcc
 
-CFLAGS	= -Wall -Werror -Wextra
+CFLAGS	= -Wall 
 
 OFLAGS  = -L/usr/local/lib -I/usr/local/include -lreadline
 
@@ -35,7 +34,7 @@ all:	${NAME}
 ${NAME}:	${OBJS}
 			make -C ${LIBFT}
 			cp libft/libft.a .
-			$(CC) ${CFLAGS} ${SRCS} ${OFLAGS} -L. ${LIBS} -o $(NAME)
+			$(CC) ${CFLAGS} -g ${SRCS} ${OFLAGS} -L. ${LIBS} -o $(NAME)
 
 			
 clean:		

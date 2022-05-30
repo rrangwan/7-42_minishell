@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lexer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nali <nali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nali <nali@42abudhabi.ae>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 04:55:03 by nali              #+#    #+#             */
-/*   Updated: 2022/05/26 20:21:24 by nali             ###   ########.fr       */
+/*   Updated: 2022/05/30 07:36:51 by nali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_quote_check(char *input, int *i, int *quote, int *flg)
 	int	j;
 
 	j = *i;
-	if (input[j] == '\'' || input[j] == '\"')
+	if ((input[j] == '\'' || input[j] == '\"') && *quote == 0)
 		*quote = input[j];
 	*flg = (*flg + (input[j] == *quote)) % 2;
 	*quote = (*quote) * (*flg);
@@ -86,53 +86,52 @@ char	**ft_separate_tokens(char **tokens, char *input, int i, int j)
 	return (tokens);
 }
 
-char	**ft_get_tokens(char *input)
+char	**ft_get_tokens(char *input, int words)
 {	
-	int		words;
 	int		index;
 	int		j;
 	char	**tokens;
 
-	words = 0;
 	index = 0;
 	j = 0;
-	words = ft_count_tokens(input, words, index);
-	printf("number of words = %d\n", words);
-	if (words == -1)
-		return (NULL);
 	tokens = (char **)malloc((words + 1) * sizeof(char *));
 	if (!tokens)
 		return (NULL);
 	index = 0;
 	tokens = ft_separate_tokens(tokens, input, index, j);
+	if (*tokens == NULL)
+	{
+		ft_free_memory(tokens);
+		return (NULL);
+	}
 	return (tokens);
 }
 
 void	ft_lexer(char *input, t_var	vars)
 {
 	char	**tokens;
+	char	**new_tokens;
 	int		i;
+	int		words;
 
 	if (!input)
 		return ;
-	tokens = ft_get_tokens(input);
+	words = 0;
+	i = 0;
+	words = ft_count_tokens(input, words, i);
+	printf("number of words = %d\n", words);
+	if (words == -1)
+		return ;
+	tokens = ft_get_tokens(input, words);
 	if (tokens == NULL)
 		return ;
-	// i = 0;
-	// printf("+++BEFORE+++\n");
-	// while (tokens[i])
-	// {
-	// 	printf("%s\n", tokens[i]);
-	// 	i++;
-	// }
 	ft_expander(tokens, vars, i);
-	// i = 0;
-	// printf("+++AFTER+++\n");
-	// while (tokens[i])
-	// {
-	// 	printf("%s ", tokens[i]);
-	// 	i++;
-	// }
-	// printf("\n");
-	ft_free_memory(tokens);
+	new_tokens = ft_split_redirection_pipe(tokens, i, words);
+	if (new_tokens == NULL)
+	{
+		ft_free_memory(tokens);
+		return ;
+	}
+	new_tokens = ft_trim(new_tokens, i, 0, 0);
+	ft_free_memory(new_tokens);
 }
