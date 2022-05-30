@@ -6,7 +6,7 @@
 /*   By: nali <nali@42abudhabi.ae>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 06:57:02 by nali              #+#    #+#             */
-/*   Updated: 2022/05/30 06:39:42 by nali             ###   ########.fr       */
+/*   Updated: 2022/05/30 09:32:33 by nali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,31 +70,68 @@ char	**ft_sub_split(char **new_tokens, char **tokens, int i, int *k)
 	return (new_tokens);
 }
 
-char	**ft_trim(char **tokens, int i, int j, int l)
+int	ft_quote_count(char *input, int i)
+{
+	int		quote;
+	int		flg;
+	int		c;
+
+	i = -1;
+	quote = 0;
+	flg = 0;
+	c = 0;
+	while (input[++i])
+	{
+		if ((input[i] == '\'' || input[i] == '\"') && quote == 0)
+			quote = input[i];
+		flg = (flg + (input[i] == quote)) % 2;
+		c = c + (input[i] == quote);
+		quote = quote * flg;
+	}
+	return (c);
+}
+
+char	*ft_trim_copy(char *new_str, char *str)
+{
+	int	quote;
+	int	flg;
+	int	i;
+	int	k;
+
+	quote = 0;
+	flg = 0;
+	i = -1;
+	k = 0;
+	while (str[++i])
+	{
+		if ((str[i] == '\'' || str[i] == '\"') && quote == 0)
+			quote = str[i];
+		flg = (flg + (str[i] == quote)) % 2;
+		if (str[i] != quote)
+		{
+			new_str[k] = str[i];
+			k++;
+		}
+		quote = quote * flg;
+	}
+	new_str[k] = '\0';
+	return (new_str);
+}
+
+char	**ft_trim(char **tokens, int i, int j, int c)
 {
 	char	*new_str;
 
 	i = -1;
 	while (tokens[++i])
 	{
-		j = 0;
-		l = ft_strlen(tokens[i]);
-		if (tokens[i][0] == '\'' && tokens[i][l - 1] == '\'')
-		{
-			new_str = ft_substr(tokens[i], 1, l - 2);
-			if (!new_str)
-				return (NULL);
-			free(tokens[i]);
-			tokens[i] = new_str;
-		}
-		else if (tokens[i][0] == '\"' && tokens[i][l - 1] == '\"')
-		{
-			new_str = ft_substr(tokens[i], 1, l - 2);
-			if (!new_str)
-				return (NULL);
-			free(tokens[i]);
-			tokens[i] = new_str;
-		}
+		c = ft_quote_count(tokens[i], j);
+		new_str = (char *)malloc(ft_strlen(tokens[i]) - c + 1);
+		if (!new_str)
+			return (NULL);
+		new_str = ft_trim_copy(new_str, tokens[i]);
+		free(tokens[i]);
+		tokens[i] = new_str;
 	}
 	return (tokens);
 }
