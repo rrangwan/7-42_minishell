@@ -40,9 +40,11 @@ void	built_in2(t_cmd *cmd, t_var *vars)
 	else if (ft_strncmp(cmd->cmd[0], "env", 4) == 0)
 		ft_env(vars);
 	else if (ft_strncmp(cmd->cmd[0], "export", 7) == 0)
-		ft_export(vars, cmd);
+		ft_export(cmd, vars);
 	else if (ft_strncmp(cmd->cmd[0], "unset", 6) == 0)
-		ft_unset(vars, cmd);
+		ft_unset(cmd, vars);
+	else if (ft_strncmp(cmd->cmd[0], "exit", 5) == 0)
+		ft_exit(cmd, vars);
 }
 
 //add to main after checking if buf is "exit"...if returns 0 then pipex it
@@ -53,9 +55,10 @@ int	built_in1(t_cmd *cmd, t_var *vars)
 	str = cmd->cmd[0];
 	if (!cmd || !vars || !cmd->cmd)
 		return (0);
-	if (ft_strncmp(str, "echo", 5) == 0 || ft_strncmp(str, "cd", 3) == 0
-		|| ft_strncmp(str, "pwd", 4) == 0 || ft_strncmp(str, "env", 4) == 0
-		|| ft_strncmp(str, "export", 7) == 0 || ft_strncmp(str, "unset", 6) == 0)
+	if (ft_strncmp(str, "echo", 5) == 0 || ft_strncmp(str, "cd", 3) == 0 \\
+		|| ft_strncmp(str, "pwd", 4) == 0 || ft_strncmp(str, "env", 4) == 0 \\
+		|| ft_strncmp(str, "export", 7) == 0 || ft_strncmp(str, "unset", 6) == 0 \\
+		|| ft_strncmp(str, "exit", 5) == 0)
 		return (1);
 	else
 		return (0);
