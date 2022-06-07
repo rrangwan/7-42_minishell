@@ -52,11 +52,38 @@ void	ft_unset(t_cmd *cmd, t_var *vars)
 //when using $name, there is substituition to value (I think your part)
 //it can take multiple arguments, if even one argument is valid, any order, it does not give error on wrong arguemnts, and it completes till end of argument list
 // if 'name' already exists, then it replaces it
-// it only gives error for arguments if first character of words is not alpha, unless it is '=' with no spaces.
+// it only gives error for arguments if first character of words is not alpha, or if there is no "name" before '=' .
 
 //also it can be used with no arguments, in which case it returns env sorted, with "declare -x " infront of each line.
 
 void	ft_export(t_cmd *cmd, t_var *vars)
+{
+	int i;
+	int j;
+	char *err; //if anyone argument has error, will not work.
+
+	if (!cmd.cmd[1])
+		return(ft_export2(vars));
+	err = ft_is_export(cmd, vars)
+	if (err != NULL)
+	{
+		err_code = 1;
+		return (printf("export: \'%s\': not a valid identifier", err));
+	}
+
+	i = 1;
+	while(cmd->cmd[i])
+	{
+		j = 0;
+		while(cmd->cmd[i][j] != '=')
+			j++;
+		if(cmd->cmd[i][j] == '=')
+			ft_export3(cmd->cmd[i], j, k, vars);
+		i++;
+	}
+}
+
+char *ft_is_export(t_cmd *cmd, t_var *vars)
 {
 	int i;
 	int j;
@@ -72,22 +99,24 @@ void	ft_export(t_cmd *cmd, t_var *vars)
 			while(cmd->cmd[i][j] != '=')
 				j++;
 			if(cmd->cmd[i][j] == '=')
-			{
-				if (ft_isalnum(cmd->cmd[i][j - 1]) &&  ft_isalpha(cmd->cmd[i][0]))//no symbols or spaces only alphanumeric && first character of name should be alpha (no numbers)
-				{
-					ft_export3(cmd->cmd[i], j, k, vars);
-					break; //back to i++; line
-				}
+				if (!ft_isalpha(cmd->cmd[i][0]))//no symbols or spaces only alphanumeric && first character of name should be alpha (no numbers)
+					return(cmd->cmd[i]);
 				else
-					{
-						printf("export: \'%s\': not a valid identifier", cmd->cmd[i]);
-						err_code = 1;
-					}
-			}
+				{
+					j--;
+					while (cmd->cmd[i][j])
+						{
+							if (!ft_isalnum(cmd->cmd[i][j]))
+							return(cmd->cmd[i]);
+							j--;
+						}
+				}
 		}
 		i++;
 	}
+	return (NULL);
 }
+
 
 void	ft_export3(char *cmd, int j, t_var *vars)
 {
@@ -133,7 +162,11 @@ void	ft_export4(char *name, char *new, t_var *vars)
 		i++;
 	}
 	if(vars->env_var[i])  //if found, and not NULL (at end) then replace (if same name used then just replace string)
-		vars->env_var[i] = new;
+		{
+			free(vars->env_var[i]);
+			vars->env_var[i] = new;
+		}
+
 	else	//below is a little simmiliar ft_oldpwd so maybe can optimize later
 	{
 		temp = (char **)malloc(sizeof(char *) * (i + 1));
@@ -152,29 +185,95 @@ void	ft_export4(char *name, char *new, t_var *vars)
 
 
 //when export used with no arguments
+//need to sort char** env into temp using website
+//	https://pencilprogrammer.com/c-programs/sort-names-in-alphabetical-order/
 void	ft_export2(t_var *vars)
 {
 	int		i;
-	char **temp;
-//need to sort char** env into temp using website
-//	https://pencilprogrammer.com/c-programs/sort-names-in-alphabetical-order/
-//still in progress
+	int 	j;
+	int		len;
+	char 	**array;
+	char 	*temp;
+
+	len = 0;
+	while(vars->env_var[len])
+		len++;
+	array = (char **) malloc(sizeof(char *) * len + 1);
+	i = 0;
+	while (vars->env_var[i])
+	{
+		array[i] = vars->env_var[i];
+		i++;
+	}
+	array[i] = NULL;
+	i = 0;
+	while(i < len)
+	{
+		j = 0;
+		while (j < len - i - 1)
+		{
+			//arbritrarilty chose length of array[j]
+			if(ft_strncmp(array[j], array[j + 1], ft_strlen(array[j])) > 0)
+			{
+				temp = ft_strdup(array[j]);
+				array[j] = ft_strdup(array[j + 1]);
+				array[j + 1] = ft_strdup(temp);
+			}
+			j++;
+		}
+		i++;
+	}
 	i = 0;
 	while (temp[i])
 	{
 		printf("declare -x %s\n", temp[i]);
 		i++;
 	}
-
+	free(temp);
+	free(array); //not sure if this passes valgrind,  if  not will need to do linked-list instead of array[len], with each node malloced and then bubble sort, will in end be easier to free each then now, not knowing which is malloced and which isnt.
 }
 
+
 //will need to update main since exit can have arguments
-ft_exit(t_cmd *cmd, t_var *vars)
+void	ft_exit(t_cmd *cmd, t_var *vars)
 {
+	int	i;
+	int	flag;
+
+	flag = 0;
 	if(!cmd->cmd[1]) //if no arguments
 	{
 		err_code = 0;
-		ft_free_env(vars);
+		flag = 1;
 	}
-//still in progress,
+	else if (cmd->cmd[2] != NULL)
+	{
+		err_code = 1;
+		flag = 1;
+		printf("exit: too many arguments\n");
+	}
+	else if (cmd->cmd[1] && cmd->cmd[1][0])
+	{
+		if (cmd->cmd[1][0] == '-') 	//can be negative number too
+			i = 1;
+		else
+			i = 0;
+		while(cmd->cmd[1][i])
+		{
+			if(!ft_isdigit(cmd->cmd[1][i]))
+			{
+				err_code = 2; //reason?
+				printf("exit: %s: numeric argument required\n", cmd->cmd[i]);
+				flag = 1;
+				break;
+			}
+			i++;
+		}
+	}
+	if (flag == 0 && cmd->cmd[1][0] == '-')
+		err_code = err_code + ft_atoi(cmd->cmd[1]);
+	if (flag == 0 && cmd->cmd[1][0] != '-')
+		err_code = ft_atoi(cmd->cmd[1]);
+	ft_free_env(vars); //(I assume this does  not exit program
+	exit(err_code);
 }
