@@ -22,7 +22,6 @@ void	ft_parser(char **tokens, t_var *vars)
 	ft_free_tokens(tokens);
 	//to print list
 	ft_print_list(vars->cmd_lst);
-	ft_print_tokens(vars->cmd_lst->cmd);
 	if(built_in1(vars->cmd_lst->cmd, vars))
 		built_in2(vars->cmd_lst->cmd, vars);
 	else
