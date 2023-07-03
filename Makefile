@@ -12,7 +12,7 @@
 
 NAME	= minishell
 
-LIBFT	= libft
+LIBFT	= LIBFT
 
 SRCS	= main.c ft_utils.c ft_lexer.c ft_free.c ft_expander.c \
 		ft_strjoin_new.c ft_envp.c ft_split_redirection_pipe.c ft_split_helper.c \
@@ -44,7 +44,7 @@ all:	${NAME}
 
 ${NAME}:	${OBJS}
 			make -C ${LIBFT}
-			cp libft/libft.a .
+			cp LIBFT/libft.a .
 			$(CC) ${CFLAGS} -g ${SRCS} ${OFLAGS} ${LIBS} ${READ_LIB} -lreadline -o $(NAME)
 
 
